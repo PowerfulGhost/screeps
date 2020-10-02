@@ -23,6 +23,7 @@ var prototypeCreep = {
                             case "full": { value = (this.store.getFreeCapacity(resType) == 0); break }
                             case "empty": { value = (this.store.getUsedCapacity(resType) == 0); break }
                             case "target": { value = (this.memory.target != null); break }
+                            case "inWorkingPos": { value = (this.pos.x == this.memory.workingPos.x && this.pos.y == this.memory.workingPos.y); break }
                         }
                         if (_.isUndefined(value)) throw new Error("Creep.FSM: unidentified condition: " + singleCondName)
                         value = (value == singleConds[singleCondName])
@@ -88,7 +89,7 @@ var prototypeCreep = {
         // HARVESTERS
         // find a source not occupied by a harvester and regist this creep to the source and return source's id
         Creep.prototype.findSource = function (sourceType = FIND_SOURCES) {
-            if (this.memory.role != "harvester") throw new Error("Creep.findSource(): this method is only for harvesters.")
+            if (this.memory.role != "harvester" && this.memory.role != "advancedHarv") throw new Error("Creep.findSource(): this method is only for harvesters.")
             if (this.memory.source) throw new Error("Creep.findSource(): this creep already has a source to harvest.")
             var sources = this.room.find(sourceType)
             for (var index in sources) {
@@ -100,6 +101,31 @@ var prototypeCreep = {
             }
             console.log("Creep.findSource(): all sources have been occupied.")
             return null
+        }
+
+        //HARVESTERS & UPGRADERS
+        // find the working position of the creep, in most situations, a container
+        Creep.prototype.findWorkingPos = function () {
+            var role = this.memory.role
+            if (role != "harvester" && role != "advancedHarv" && role != "upgrader") throw new Error("Creep.findWorkingPos(): this method is for harvesters and upgraders.")
+            var target = Game.getObjectById(this.memory.target)
+            if (!target) throw new Error("Creep.findWorkingPos(): this creep has no target.")
+            if (role == "harvester" || role == "advancedHarv") {
+                if (!(target instanceof Source)) throw new Error("Creep.findWorkingPos(): harvester's target is not a Source.")
+                var container = target.pos.findInRange(FIND_STRUCTURES, 1, { filter: function (stru) { return stru.structureType == STRUCTURE_CONTAINER } })[0]
+                if (!container) {
+                    console.warn("Source" + target.id + " @(" + target.pos.x + "," + target.pos.y + "," + target.pos.roomName + ") has no container nearby.")
+                    return new RoomPosition(null, null, null)
+                } else return container.pos
+            }
+            if (role == "upgrader") {
+                if (!(target instanceof StructureController)) throw new Error("Creep.findWorkingPos(): upgrader's target is not a StructureController")
+                var container = target.pos.findInRange(FIND_STRUCTURES, 3, { filter: function (stru) { return stru.structureType == STRUCTURE_CONTROLLER } })[0]
+                if (!container) {
+                    console.warn("Controller @(" + target.pos.x + "," + target.pos.y + "," + target.pos.roomName + ") has no container nearby.")
+                    return new RoomPosition(null, null, null)
+                } else return container.pos
+            }
         }
 
         // BUILDERS

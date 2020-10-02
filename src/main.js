@@ -66,28 +66,28 @@ module.exports.loop = function () {
             { memory: roleHarvester.memory }
         )
     }
-    if (upgraderCount < 1) {
+    if (upgraderCount < 0) {
         spawn.spawnCreep(
             [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
             "upgrader" + Game.time,
             { memory: roleUpgrader.memory }
         )
     }
-    if (builderCount < 1) {
+    if (builderCount < 0) {
         spawn.spawnCreep(
             roleBuilder.bodyparts,
             "builder" + Game.time,
             { memory: roleBuilder.memory }
         )
     }
-    if(advHarvCount < 2){
+    if(advHarvCount < 1){
         spawn.spawnCreep(
-            roleAdvancedHarv.bodyparts,
+            [WORK, MOVE],
             "advancedHarv"+Game.time,
             {memory:roleAdvancedHarv.memory}
         )
     }
-    if(haulerCount < 2){
+    if(haulerCount < 0){
         spawn.spawnCreep(
             roleHauler.bodyparts,
             "hauler"+Game.time,
