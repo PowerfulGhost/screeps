@@ -4,7 +4,7 @@ var advancedHarv = {
         role: "advancedHarv",
         target: null,
         ticksToWorkplace: 0,
-        workingPos: new RoomPosition(null, null, null),
+        workingPos: null
     },
     config: {
         resourceType: RESOURCE_ENERGY,

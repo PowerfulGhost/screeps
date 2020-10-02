@@ -115,7 +115,7 @@ var prototypeCreep = {
                 var container = target.pos.findInRange(FIND_STRUCTURES, 1, { filter: function (stru) { return stru.structureType == STRUCTURE_CONTAINER } })[0]
                 if (!container) {
                     console.warn("Source" + target.id + " @(" + target.pos.x + "," + target.pos.y + "," + target.pos.roomName + ") has no container nearby.")
-                    return new RoomPosition(null, null, null)
+                    return null
                 } else return container.pos
             }
             if (role == "upgrader") {
@@ -123,7 +123,7 @@ var prototypeCreep = {
                 var container = target.pos.findInRange(FIND_STRUCTURES, 3, { filter: function (stru) { return stru.structureType == STRUCTURE_CONTROLLER } })[0]
                 if (!container) {
                     console.warn("Controller @(" + target.pos.x + "," + target.pos.y + "," + target.pos.roomName + ") has no container nearby.")
-                    return new RoomPosition(null, null, null)
+                    return null
                 } else return container.pos
             }
         }
