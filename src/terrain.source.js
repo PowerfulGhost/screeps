@@ -1,6 +1,6 @@
 var struSource = {
     /** @param {Source} source */
-    run: function () {
+    run: function (source) {
         for (var name in Game.rooms) {
             var room = Game.rooms[name]
             var sources = room.find(FIND_SOURCES)

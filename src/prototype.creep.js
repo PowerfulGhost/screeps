@@ -4,6 +4,9 @@ var prototypeCreep = {
         // a single FSM implementation
         // this FSM can only changes the state, it can't give creep a new target
         Creep.prototype.FSM = function (fsmConfig) {
+            console.log("FSM")
+            console.log("state: " + this.memory.state)
+            console.log(this.pos)
             // some shortcuts
             var state = this.memory.state
             var resType = this.memory.resourceType
@@ -27,8 +30,10 @@ var prototypeCreep = {
                         }
                         if (_.isUndefined(value)) throw new Error("Creep.FSM: unidentified condition: " + singleCondName)
                         value = (value == singleConds[singleCondName])
+                        console.log("value: " + value)
                         condValue &= value
                     }
+                    console.log("condValue: " + condValue)
                     allCondValue |= condValue
                 }
                 if (allCondValue == true) { this.memory.state = stateName; this.say(stateName); break }

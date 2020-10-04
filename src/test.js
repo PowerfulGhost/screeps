@@ -1,6 +1,4 @@
-arr = ["A","B","C","D"]
+arr = [1,2,3]
 for(var a in arr){
-    var letter = arr[a]
     console.log(a)
-    console.log(letter)
 }

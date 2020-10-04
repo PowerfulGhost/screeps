@@ -1,6 +1,7 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     // 加载任务依赖
     grunt.loadNpmTasks('grunt-screeps');
+    grunt.loadNpmTasks("grunt-contrib-watch")
     // 定义任务
     grunt.initConfig({
         // screeps 代码上传任务
@@ -15,5 +16,9 @@ module.exports = function(grunt) {
                 src: ['./src/*.{js,wasm}'],
             }
         },
+        watch: {
+            files: "./src/*.*",
+            tasks: ["screeps"]
+        }
     });
 }

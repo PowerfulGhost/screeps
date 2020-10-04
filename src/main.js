@@ -5,12 +5,13 @@ var roleBuilder = require("role.builder")
 var roleAdvancedHarv = require("role.advancedHarv")
 var roleHauler = require("role.hauler")
 
-var struSource = require("stru.source")
+var terrainSource = require("./terrain.source")
 var struTower = require("stru.tower")
 
 init.run()
 module.exports.loop = function () {
-    struSource.run()
+    console.log("========================")
+    terrainSource.run()
     var harvesterCount = 0
     var upgraderCount = 0
     var builderCount = 0
@@ -80,7 +81,7 @@ module.exports.loop = function () {
             { memory: roleBuilder.memory }
         )
     }
-    if(advHarvCount < 1){
+    if(advHarvCount < 0){
         spawn.spawnCreep(
             [WORK, MOVE],
             "advancedHarv"+Game.time,
