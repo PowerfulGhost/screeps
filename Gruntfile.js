@@ -13,7 +13,7 @@ module.exports = function(grunt) {
                 ptr: false
             },
             dist: {
-                src: ['/*.{js,wasm}'],
+                src: ['./src/*.{js,wasm}'],
             }
         },
     });
