@@ -1,5 +1,6 @@
 var roleBulider = {
-    bodyparts: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+    bodyparts:[WORK, CARRY, MOVE],
+    // bodyparts: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
     memory: {
         role: "builder",
         state: "idle",

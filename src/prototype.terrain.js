@@ -1,7 +1,7 @@
 var prototypeTerrain = {
     run: function () {
+        console.log("init: terrain")
         if (_.isUndefined(Memory.terrain)) Memory.terrain = {}
-
         this._source()
     },
     _source: function () {

@@ -1,9 +1,11 @@
 // add some methods to the prototype of Creep
 var prototypeCreep = {
     run: function () {
+        console.log("init: creep")
         // a single FSM implementation
         // this FSM can only changes the state, it can't give creep a new target
         Creep.prototype.FSM = function (fsmConfig) {
+            console.log(this.name)
             console.log("FSM")
             console.log("state: " + this.memory.state)
             console.log(this.pos)
@@ -95,7 +97,7 @@ var prototypeCreep = {
         // find a source not occupied by a harvester and regist this creep to the source and return source's id
         Creep.prototype.findSource = function (sourceType = FIND_SOURCES) {
             if (this.memory.role != "harvester" && this.memory.role != "advancedHarv") throw new Error("Creep.findSource(): this method is only for harvesters.")
-            if (this.memory.source) throw new Error("Creep.findSource(): this creep already has a source to harvest.")
+            if (this.memory.target) throw new Error("Creep.findSource(): this creep already has a source to harvest.")
             var sources = this.room.find(sourceType)
             for (var index in sources) {
                 var source = sources[index]
@@ -119,7 +121,7 @@ var prototypeCreep = {
                 if (!(target instanceof Source)) throw new Error("Creep.findWorkingPos(): harvester's target is not a Source.")
                 var container = target.pos.findInRange(FIND_STRUCTURES, 1, { filter: function (stru) { return stru.structureType == STRUCTURE_CONTAINER } })[0]
                 if (!container) {
-                    console.warn("Source" + target.id + " @(" + target.pos.x + "," + target.pos.y + "," + target.pos.roomName + ") has no container nearby.")
+                    console.log("Source" + target.id + " @(" + target.pos.x + "," + target.pos.y + "," + target.pos.roomName + ") has no container nearby.")
                     return null
                 } else return container.pos
             }
@@ -127,7 +129,7 @@ var prototypeCreep = {
                 if (!(target instanceof StructureController)) throw new Error("Creep.findWorkingPos(): upgrader's target is not a StructureController")
                 var container = target.pos.findInRange(FIND_STRUCTURES, 3, { filter: function (stru) { return stru.structureType == STRUCTURE_CONTROLLER } })[0]
                 if (!container) {
-                    console.warn("Controller @(" + target.pos.x + "," + target.pos.y + "," + target.pos.roomName + ") has no container nearby.")
+                    console.log("Controller @(" + target.pos.x + "," + target.pos.y + "," + target.pos.roomName + ") has no container nearby.")
                     return null
                 } else return container.pos
             }
