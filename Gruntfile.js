@@ -9,7 +9,7 @@ module.exports = function (grunt) {
             options: {
                 email: '3170101245@zju.edu.cn',
                 password: '8376462867fzc',
-                branch: 'test',
+                branch: 'evolution',
                 ptr: false
             },
             dist: {
