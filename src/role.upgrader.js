@@ -71,9 +71,9 @@ var roleUpgrader = {
         // working logic
         if (state == "harvest") {
             if (sourceType == "source") {
-                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source)
-                }
+                // if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                //     creep.moveTo(source)
+                // }
             }
             if (sourceType == "container" || sourceType == "storage") {
                 if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
