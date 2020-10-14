@@ -35,7 +35,6 @@ var roleBulider = {
         }
         if (state == "get") {
             creep.memory.target = creep.findResourceTarget()
-            console.log(creep.memory.target)
             creep.getFromResourceTarget(creep.memory.target)
         }
         if(state == "build"){
