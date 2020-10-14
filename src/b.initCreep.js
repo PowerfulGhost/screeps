@@ -1,3 +1,4 @@
+const { slice } = require("lodash")
 const { getMinIndex } = require("./util")
 
 var initCreep = {
@@ -21,17 +22,24 @@ var initCreep = {
                     count += 1
             return count
         }
-        // Creep.prototype.findSourceID = function () {
-        //     var sourceIDList = this.room.memory.terrain.sources
-        //     var sourceNum = sourceIDList.length
-        //     for (var index in sourceIDList){
-        //         var sourceID = sourceIDList[index]
-        //         var source = Game.getObjectById(sourceID)
-        //     }
-        // }
+        Creep.prototype.getBreedInfo = function () {
+
+        }
+        Creep.prototype.breed = function () {
+            var breedInfo = this.getBreedInfo()
+            var spawnList = this.room.find(FIND_MY_SPAWNS)
+            var spawnQueueLengthList = []
+            for (var index in spawnList) {
+                var spawn = spawnList[index]
+                spawnQueueLengthList.push(spawn.getQueueLength())
+            }
+            var minIndex = getMinIndex(spawnQueueLengthList)
+            var spawn = spawnList[minIndex]
+            spawn.enqueue(breedInfo)
+        }
     },
 
-    // functions for workers(harvesters, builders, repairers and upgraders)
+    // functions for workers(harvesters, builders, haulers and upgraders)
     _worker: function () {
         // choose a role randomly based on the posibilities in creep's memory
         Creep.prototype.getRandomRole = function () {

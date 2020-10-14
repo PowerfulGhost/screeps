@@ -1,2 +1,2 @@
-完成initCreep：添加各种基本行为的evo_版本
-考虑要不要重新组织Memory树（现在看来好像不用）
+完成initCreep，
+完成initStructure，主要是关于spawn的queue的各种函数
