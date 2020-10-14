@@ -13,7 +13,7 @@ var roleUpgrader = {
     run: function (creep) {
         // some upgrader config
         var sourceType = "source"
-        
+
         // update controller in creep's memory
         if (creep.memory.controller == null) {
             creep.memory.controller = creep.room.controller.id
@@ -54,14 +54,18 @@ var roleUpgrader = {
         }
 
         // state transition
-        if (creep.memory.state == "harvest" && creep.store.getFreeCapacity() == 0) {
+        // if (creep.memory.state == "harvest" && creep.store.getFreeCapacity() == 0) {
+        //     creep.memory.state = "upgrade"
+        //     creep.say("upgrade")
+        // }
+        if (creep.memory.state == "harvest") {
             creep.memory.state = "upgrade"
             creep.say("upgrade")
         }
-        if (creep.memory.state == "upgrade" && creep.store.getUsedCapacity() == 0) {
-            creep.memory.state = "harvest"
-            creep.say("harvest")
-        }
+        // if (creep.memory.state == "upgrade" && creep.store.getUsedCapacity() == 0) {
+        //     creep.memory.state = "harvest"
+        //     creep.say("harvest")
+        // }
 
         // some shortcuts
         var state = creep.memory.state

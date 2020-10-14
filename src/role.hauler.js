@@ -115,7 +115,7 @@ var roleHauler = {
                 {
                     filter: function (obj) {
                         return obj.structureType == STRUCTURE_TOWER &&
-                            obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.3 * obj.store.getCapacity()
+                            obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.3 * obj.store.getCapacity(RESOURCE_ENERGY)
                     }
                 })
         }
@@ -125,7 +125,7 @@ var roleHauler = {
                 {
                     filter: function (obj) {
                         return obj.structureType == STRUCTURE_STORAGE &&
-                            obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.5 * obj.store.getCapacity()
+                            obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.5 * obj.store.getCapacity(RESOURCE_ENERGY)
                     }
                 })
         }
@@ -133,7 +133,7 @@ var roleHauler = {
         else {
             receiver = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
                 filter: function (obj) {
-                    return obj.memory.role == "upgrader" && obj.store.getFreeCapacity() > 0.9 * obj.store.getCapacity()
+                    return obj.memory.role == "upgrader" && obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.7 * obj.store.getCapacity(RESOURCE_ENERGY)
                 }
             })
         }
