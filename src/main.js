@@ -70,7 +70,7 @@ module.exports.loop = function () {
     }
     if (upgraderCount < 2) {
         spawn.spawnCreep(
-            [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             "upgrader" + Game.time,
             { memory: roleUpgrader.memory }
         )
