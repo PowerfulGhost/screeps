@@ -15,7 +15,7 @@ module.exports.loop = function () {
     var upgraderCount = 0
     var builderCount = 0
     var advHarvCount = 0
-    var haulerCount = 0 
+    var haulerCount = 0
     for (var name in Memory.creeps) {
         if (!Game.creeps[name]) {
             delete Memory.creeps[name]
@@ -36,23 +36,25 @@ module.exports.loop = function () {
             builderCount += 1
             roleBuilder.run(creep)
         }
-        if(creep.memory.role == "hauler"){
+        if (creep.memory.role == "hauler") {
             haulerCount += 1
             roleHauler.run(creep)
         }
-        if(creep.memory.role == "advancedHarv"){
+        if (creep.memory.role == "advancedHarv") {
             advHarvCount += 1
             roleAdvancedHarv.run(creep)
         }
     }
 
-    for(var name in Game.rooms){
+    for (var name in Game.rooms) {
         var room = Game.rooms[name]
         var towers = room.find(FIND_STRUCTURES,
-            {filter:function(obj){
-                return obj.structureType == STRUCTURE_TOWER
-            }})
-        for(var towerName in towers){
+            {
+                filter: function (obj) {
+                    return obj.structureType == STRUCTURE_TOWER
+                }
+            })
+        for (var towerName in towers) {
             var tower = towers[towerName]
             struTower.run(tower)
         }
@@ -68,7 +70,7 @@ module.exports.loop = function () {
     }
     if (upgraderCount < 3) {
         spawn.spawnCreep(
-            [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
+            [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             "upgrader" + Game.time,
             { memory: roleUpgrader.memory }
         )
@@ -80,18 +82,18 @@ module.exports.loop = function () {
             { memory: roleBuilder.memory }
         )
     }
-    if(advHarvCount < 2){
+    if (advHarvCount < 2) {
         spawn.spawnCreep(
             roleAdvancedHarv.bodyparts,
-            "advancedHarv"+Game.time,
-            {memory:roleAdvancedHarv.memory}
+            "advancedHarv" + Game.time,
+            { memory: roleAdvancedHarv.memory }
         )
     }
-    if(haulerCount < 3){
+    if (haulerCount < 3) {
         spawn.spawnCreep(
             roleHauler.bodyparts,
-            "hauler"+Game.time,
-            {memory:roleHauler.memory}
+            "hauler" + Game.time,
+            { memory: roleHauler.memory }
         )
     }
     if (spawn.spawning) {
