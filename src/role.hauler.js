@@ -133,7 +133,7 @@ var roleHauler = {
         else {
             receiver = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
                 filter: function (obj) {
-                    return obj.memory.role == "upgrader"
+                    return obj.memory.role == "upgrader" && obj.store.getFreeCapacity() > 0.1 * obj.store.getCapacity()
                 }
             })
         }
