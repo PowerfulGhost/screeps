@@ -10,6 +10,7 @@ var struTower = require("stru.tower")
 
 init.run()
 module.exports.loop = function () {
+    Game.cpu.generatePixel()
     struSource.run()
     var harvesterCount = 0
     var upgraderCount = 0
