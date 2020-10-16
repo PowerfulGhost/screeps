@@ -69,7 +69,7 @@ module.exports.loop = function () {
             { memory: roleHarvester.memory }
         )
     }
-    if (upgraderCount < 2) {
+    if (upgraderCount < 3) {
         spawn.spawnCreep(
             [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             "upgrader" + Game.time,
