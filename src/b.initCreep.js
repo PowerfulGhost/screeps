@@ -1,10 +1,9 @@
-const { slice } = require("lodash")
 const { getMinIndex } = require("./util")
 
 var initCreep = {
     run: function () {
-        this.general()
-        this._worker()
+        this.general()  // general functions for all creeps
+        this._worker()  // functions for harvesters, upgraders, haulers and builders
     },
 
     /* 
@@ -58,9 +57,7 @@ var initCreep = {
             return "build"
         }
 
-        /*
-        UPGRADER
-        */
+        // UPGRADER
         // upgrade the controller and return the energy just used
         Creep.prototype.evo_upgradeController = function () {
             var controller = this.room.controller
@@ -70,9 +67,7 @@ var initCreep = {
             else return 0
         }
 
-        /*
-        HARVESTER
-        */
+        // HARVESTER
         // get the source with minimum number of harvest around it, return the ID
         // this function should be called when the creep decided to become a harvester
         Creep.prototype.evo_getSourceID = function () {
@@ -96,14 +91,32 @@ var initCreep = {
             else return 0
         }
 
-        /*
-        BUILDER
-        */
+        // BUILDER
+        // build the target, return the energy just used to build
         Creep.prototype.evo_build = function () {
             var constructionSite = Game.getObjectById(this.memory.target)
             var result = this.build(constructionSite)
             var workBodypartNum = this.getBodypartNum(WORK)
             if (result == OK) return 5 * workBodypartNum
+            else return 0
+        }
+        // repaire the target, return the energy just used to build
+        Creep.prototype.evo_repair = function () {
+            var damagedStru = Game.getObjectById(this.memory.target)
+            var result = this.repair(damagedStru)
+            var workBodypartNum = this.getBodypartNum(WORK)
+            if (result == OK) return workBodypartNum
+            else return 0
+        }
+
+        // HAULER
+        // transfer resource(energy by default) to target, return the amount of resurce just transfered
+        Creep.prototype.evo_transfer = function (resourceType = RESOURCE_ENERGY) {
+            var transferTarget = Game.getObjectById(this.memory.target)
+            var storeBefore = this.store.getUsedCapacity(resourceType)
+            var result = this.transfer(transferTarget, resourceType)
+            var storeAfter = this.store.getUsedCapacity(resourceType)
+            if (result == OK) return storeBefore - storeAfter
             else return 0
         }
     }
