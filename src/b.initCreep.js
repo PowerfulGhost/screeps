@@ -1,10 +1,23 @@
-const { getMinIndex } = require("./util")
+const { getMinIndex, zeroMean } = require("./util")
 
 var initCreep = {
     run: function () {
-        this.general()  // general functions for all creeps
-        this._worker()  // functions for harvesters, upgraders, haulers and builders
+        // this._creepMemoryInit() // init creep's memory tree
+        this._creepGeneralFunction()  // general functions for all creeps
+        this._creepWorkerFunction()  // functions for harvesters, upgraders, haulers and builders
     },
+
+    // _creepMemoryInit: function () {
+    //     Object.defineProperty(Creep.prototype, "memory", {
+    //         configurable: true,
+    //         set: function(){
+
+    //         },
+    //         get: function () {
+
+    //         },
+    //     })
+    // },
 
     /* 
     functions defined below are not allowed to change creep's memory
@@ -13,7 +26,7 @@ var initCreep = {
     */
 
     // general functions for all creeps
-    general: function () {
+    _creepGeneralFunction: function () {
         Creep.prototype.getBodypartNum = function (bodypartType) {
             var count = 0
             for (var part in this.body)
@@ -22,11 +35,35 @@ var initCreep = {
             return count
         }
         Creep.prototype.getBreedInfo = function () {
+            var role = this.memory.role
 
+            // calculate nextgen's role posibility
+            var rolePosibility = this.memory.rolePosibility
+            var roleScore = this.memory.evolutionInfo.roleScore
+            var zmRoleScore = zeroMean(roleScore, 0.1)
+            var newPosibility = {}
+            for (var workName in rolePosibility)
+                newPosibility[workName] = rolePosibility[workName] + zmRoleScore[workName]
+
+            // calculate nextget's bodypart number
+            var bodypartScore = this.memory.evolutionInfo.bodypartScore
+            var zmBodypartScore = zeroMean(bodypartScore, 1)
+            var newBodypart = {}
+            for (var bodypartName in zmBodypartScore)
+                newBodypart[bodypartName] =
+                    this.getBodypartNum(bodypartName) + Math.ceil(zmBodypartScore[bodypartName])
+
+            return {
+                role: role,
+                newPosibility: newPosibility,
+                newBodypart: newBodypart
+            }
         }
         Creep.prototype.breed = function () {
             var breedInfo = this.getBreedInfo()
             var spawnList = this.room.find(FIND_MY_SPAWNS)
+
+            // find the spawn with shortest spawnQueue
             var spawnQueueLengthList = []
             for (var index in spawnList) {
                 var spawn = spawnList[index]
@@ -34,12 +71,13 @@ var initCreep = {
             }
             var minIndex = getMinIndex(spawnQueueLengthList)
             var spawn = spawnList[minIndex]
+
             spawn.enqueue(breedInfo)
         }
     },
 
     // functions for workers(harvesters, builders, haulers and upgraders)
-    _worker: function () {
+    _creepWorkerFunction: function () {
         // choose a role randomly based on the posibilities in creep's memory
         Creep.prototype.getRandomRole = function () {
             var pHarv = this.memory.rolePosibility.harvest

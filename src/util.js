@@ -20,5 +20,24 @@ function getMinIndex(arr) {
     }
     return minIndex
 }
+function zeroMean(obj, maxAbs) {
+    var sum = 0
+    var N = 0
+    for (var index in obj) {
+        sum += obj[index]
+        N += 1
+    }
+    var mean = sum / N
+    var max = 0
+    var ret = {}
+    for (var index in obj) {
+        ret[index] = obj[index] - mean
+        if (Math.abs(ret[index]) > max)
+            max = Math.abs(ret[index])
+    }
+    var scaleRatio = maxAbs / max
+    for (var index in ret) ret[index] *= scaleRatio
+    return ret
+}
 
-module.exports = {getMaxIndex, getMinIndex}
+module.exports = { getMaxIndex, getMinIndex, zeroMean }
