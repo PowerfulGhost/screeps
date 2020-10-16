@@ -86,7 +86,7 @@ var roleUpgrader = {
             }
         }
         if (state == "upgrade") {
-            if (creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
+            if (creep.upgradeController(controller) != OK) {
                 creep.moveTo(controller)
             }
         }

@@ -17,13 +17,13 @@ var advancedHarv = {
                 creep.memory.ticksToWorkplace += 1
             }
         }
-        if (creep.ticksToLive < creep.memory.ticksToWorkplace) {
-            Game.spawns["Spawn1"].spawnCreep(
-                this.bodyparts,
-                "advancedHarv" + Game.time,
-                { memory: this.memory }
-            )
-        }
+        // if (creep.ticksToLive < creep.memory.ticksToWorkplace) {
+        //     Game.spawns["Spawn1"].spawnCreep(
+        //         this.bodyparts,
+        //         "advancedHarv" + Game.time,
+        //         { memory: this.memory }
+        //     )
+        // }
 
     },
 
