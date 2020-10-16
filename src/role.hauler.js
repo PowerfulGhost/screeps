@@ -83,7 +83,7 @@ var roleHauler = {
         var energy = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES,
             {
                 filter: function (obj) {
-                    return obj.resourceType == RESOURCE_ENERGY && obj.amount > 10 * creep.store.getCapacity()
+                    return obj.resourceType == RESOURCE_ENERGY && obj.amount >  creep.store.getCapacity()
                 }
             })
         if (!energy) {
