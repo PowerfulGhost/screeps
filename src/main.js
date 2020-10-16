@@ -76,7 +76,9 @@ module.exports.loop = function () {
             { memory: roleUpgrader.memory }
         )
     }
-    if (builderCount < 1) {
+    var builderNum = 1
+    if (spawn.room.find(FIND_CONSTRUCTION_SITES).length == 0) builderNum = 0
+    if (builderCount < builderNum) {
         spawn.spawnCreep(
             roleBuilder.bodyparts,
             "builder" + Game.time,
