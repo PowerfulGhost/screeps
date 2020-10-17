@@ -61,6 +61,9 @@ module.exports.loop = function () {
         }
     }
 
+    var builderNum = 1
+    var upgraderNum = 2
+    if (spawn.room.find(FIND_CONSTRUCTION_SITES).length == 0) { builderNum = 0; upgraderNum = 3 }
     var spawn = Game.spawns["Spawn1"]
     if (harvesterCount < 0) {
         spawn.spawnCreep(
@@ -69,15 +72,13 @@ module.exports.loop = function () {
             { memory: roleHarvester.memory }
         )
     }
-    if (upgraderCount < 3) {
+    if (upgraderCount < upgraderNum) {
         spawn.spawnCreep(
             [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             "upgrader" + Game.time,
             { memory: roleUpgrader.memory }
         )
     }
-    var builderNum = 1
-    if (spawn.room.find(FIND_CONSTRUCTION_SITES).length == 0) builderNum = 0
     if (builderCount < builderNum) {
         spawn.spawnCreep(
             roleBuilder.bodyparts,

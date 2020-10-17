@@ -10,37 +10,43 @@ var roleBulider = {
         resourceType: RESOURCE_ENERGY,
         hitsLimit: 100000,
         FSM: {
-            get: {
-                build: { cond0: { full: true }, cond1: { target: false, empty: false } },
-                idle: { cond0: { target: false, empty: true } }
-            },
+            // get: {
+            //     build: { cond0: { full: true }, cond1: { target: false, empty: false } },
+            //     idle: { cond0: { target: false, empty: true } }
+            // },
             build: {
-                get: { cond0: { empty: true } },
-                idle: { cond0: { empty: false, target: false } }
+                // get: { cond0: { empty: true } },
+                // idle: { cond0: { empty: false, target: false } }
+                idle: { cond0: { target: false } }
             },
             idle: {
-                get: { cond0: { target: true } }
+                // get: { cond0: { target: true } }
+                // build:{cond0:{target:true}}
             }
         }
     },
     /** @param {Creep} creep */
     run: function (creep) {
         // state transition
-        creep.FSM(this.config.FSM)
+        // creep.FSM(this.config.FSM)
 
-        // working logic
-        var state = creep.memory.state
-        if (state == "idle") {
-            creep.memory.target = creep.findSite(this.config.hitsLimit)
-        }
-        if (state == "get") {
-            creep.memory.target = creep.findResourceTarget()
-            creep.getFromResourceTarget(creep.memory.target)
-        }
-        if(state == "build"){
-            creep.memory.target = creep.findSite()
-            creep.buildOrRepairTarget(creep.memory.target)
-        }
+        // // working logic
+        // var state = creep.memory.state
+        // if (state == "idle") {
+        //     creep.memory.target = creep.findSite(this.config.hitsLimit)
+        // }
+        // if (state == "get") {
+        //     creep.memory.target = creep.findResourceTarget()
+        //     creep.getFromResourceTarget(creep.memory.target)
+        // }
+        // if (state == "build") {
+        //     creep.memory.target = creep.findSite()
+        //     creep.buildOrRepairTarget(creep.memory.target)
+        // }
+        var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES)
+        if (target)
+            if (creep.build(target) != OK)
+                creep.moveTo(target)
     },
 }
 

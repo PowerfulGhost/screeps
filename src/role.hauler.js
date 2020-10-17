@@ -83,7 +83,7 @@ var roleHauler = {
         var energy = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES,
             {
                 filter: function (obj) {
-                    return obj.resourceType == RESOURCE_ENERGY && obj.amount >  creep.store.getCapacity()
+                    return obj.resourceType == RESOURCE_ENERGY && obj.amount > creep.store.getCapacity()
                 }
             })
         if (!energy) {
@@ -128,6 +128,14 @@ var roleHauler = {
                             obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.5 * obj.store.getCapacity(RESOURCE_ENERGY)
                     }
                 })
+        }
+        if (receiver) return receiver.id
+        else {
+            receiver = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
+                filter: function (obj) {
+                    return obj.memory.role == "builder" && obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.5 * obj.store.getCapacity()
+                }
+            })
         }
         if (receiver) return receiver.id
         else {
