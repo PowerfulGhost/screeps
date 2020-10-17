@@ -4,7 +4,7 @@ var roleHauler = {
         state: "get",
         target: null
     },
-    bodyparts: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+    bodyparts: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
     /** @param {Creep} creep */
     run: function (creep) {
         // state transition
