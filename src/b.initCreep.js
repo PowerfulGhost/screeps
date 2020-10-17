@@ -39,11 +39,11 @@ var initCreep = {
 
             // calculate nextgen's role posibility
             var rolePosibility = this.memory.rolePosibility
-            var roleScore = this.memory.evolutionInfo.roleScore
-            var zmRoleScore = zeroMean(roleScore, 0.1)
+            var workScore = this.memory.evolutionInfo.workScore
+            var zmworkScore = zeroMean(workScore, 0.1)
             var newPosibility = {}
             for (var workName in rolePosibility)
-                newPosibility[workName] = rolePosibility[workName] + zmRoleScore[workName]
+                newPosibility[workName] = rolePosibility[workName] + zmworkScore[workName]
 
             // calculate nextget's bodypart number
             var bodypartScore = this.memory.evolutionInfo.bodypartScore

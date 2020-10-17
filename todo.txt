@@ -1,2 +1,7 @@
 完成initCreep，
 完成initStructure，主要是关于spawn的queue的各种函数
+
+2020.10.17
+完成initTerrain，主要是关于Source的各种函数
+完成任务发布和接受系统
+完成runWorker

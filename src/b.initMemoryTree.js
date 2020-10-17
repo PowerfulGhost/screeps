@@ -1,5 +1,3 @@
-const { str } = require("underscore")
-
 var initMemoryTree = {
     run: function () {
         console.log("rewite memory tree")
