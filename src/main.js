@@ -61,10 +61,10 @@ module.exports.loop = function () {
         }
     }
 
+    var spawn = Game.spawns["Spawn1"]
     var builderNum = 1
     var upgraderNum = 2
     if (spawn.room.find(FIND_CONSTRUCTION_SITES).length == 0) { builderNum = 0; upgraderNum = 3 }
-    var spawn = Game.spawns["Spawn1"]
     if (harvesterCount < 0) {
         spawn.spawnCreep(
             [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
