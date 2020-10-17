@@ -130,14 +130,14 @@ var roleHauler = {
                 })
         }
         if (receiver) return receiver.id
-        else {
-            receiver = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
-                filter: function (obj) {
-                    return obj.memory.role == "builder" && obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.5 * obj.store.getCapacity()
-                }
-            })
-        }
-        if (receiver) return receiver.id
+        // else {
+        //     receiver = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
+        //         filter: function (obj) {
+        //             return obj.memory.role == "builder" && obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0.5 * obj.store.getCapacity()
+        //         }
+        //     })
+        // }
+        // if (receiver) return receiver.id
         else {
             receiver = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
                 filter: function (obj) {
