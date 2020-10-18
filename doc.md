@@ -58,16 +58,17 @@
             taskInfo:{
                 taskType:"haul",
                 taskPiority:{0,1,2,3,4,5}
+                target:'toObjectID',
                 resourceType:'RESOURCE_*',
                 amount:#iAmount,
-                from:'fromObjectID',
-                to:'toObjectID',
                 additionalProperties:{}
             }
         b、要求修理
             taskInfo:{
-                taskType:"repaire",
+                taskType:"repair",
                 taskPiority:{0,1,2,3,4,5}
+                target: 'damagedStructureID'
+                additionalProperties:{}
             }
         ...
 ----------------------------------
