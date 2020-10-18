@@ -1,14 +1,12 @@
-// add some methods to the prototype of Creep
+// Creep原型扩展
 var prototypeCreep = {
     run: function () {
-        // a single FSM implementation
-        // this FSM can only changes the state, it can't give creep a new target
+        // 有限状态机，只返回下一状态，不改变creep的memory
         Creep.prototype.FSM = function (fsmConfig) {
-            // some shortcuts
             var state = this.memory.state
             var resType = this.memory.resourceType
             var otherStates = fsmConfig[state]   // state transition condition of current state
-            // loop over all other states
+            // 所有状态
             for (var stateName in otherStates) {
                 var cond = otherStates[stateName]
                 var allCondValue = false   // this value decides if the state is going to be switched
