@@ -1,6 +1,3 @@
-arr = ["A","B","C","D"]
-for(var a in arr){
-    var letter = arr[a]
-    console.log(a)
-    console.log(letter)
-}
+a = [1,2,3,4,5,6]
+a.splice(3,2)
+console.log(a)
