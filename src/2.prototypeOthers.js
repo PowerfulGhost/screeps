@@ -1,0 +1,5 @@
+var prototypeOthers = {
+    run:function(){
+        
+    }
+}
