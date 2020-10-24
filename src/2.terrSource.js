@@ -1,20 +1,9 @@
-var struSource = {
+var terrSource = {
     /** @param {Source} source */
-    run: function () {
-        for (var name in Game.rooms) {
-            var room = Game.rooms[name]
-            var sources = room.find(FIND_SOURCES)
-            for (var sourceName in sources) {
-                var source = sources[sourceName]
-                if (source.memory.harvester) {
-                    var harvester = Game.getObjectById(source.memory.harvester)
-                    if (!harvester) {
-                        source.memory.harvester = null
-                    }
-                }
-            }
-        }
+    run: function (source) {
+        source.setWorkPos()
+        source.isOccupied()
     }
 }
 
-module.exports = struSource
+module.exports = terrSource
