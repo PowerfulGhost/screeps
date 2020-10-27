@@ -1,3 +1,5 @@
+const { TASK_TYPE_HAUL, TASK_TYPE_BUILD, TASK_TYPE_SPAWN } = require("./const")
+
 var prototypeRoom = {
     run: function () {
         this._taskPool()
@@ -61,5 +63,29 @@ var prototypeRoom = {
         }
     }
 }
+var protocolRoom = {
+    taskInfo: function (taskType, piority, handler=null, otherInfo) {
+        if (taskType != TASK_TYPE_HAUL || taskType != TASK_TYPE_BUILD || taskType != TASK_TYPE_SPAWN)
+            throw new Error("taskInfo(): taskType invalid")
+        if(!_.isNumber(piority)) throw new Error("taskInfo(): invalid piority")
+        if(piority<1||piority>5) throw new Error("taskInfo(): piority must within [1,5]")
+        if(!_.isObject(otherInfo)) throw new Error("taskInfo(): invalid otherInfo")
+        switch(taskType){
+            case TASK_TYPE_HAUL:{
+                if(_.isUndefined(otherInfo.target)) throw new Error("taskInfo(): target is undefined in otherInfo")
+                if(_.isUndefined(otherInfo.resourceType)) throw new Error("taskInfo(): resourceType is undefined in otherInfo")
+                if(_.isUndefined(otherInfo.amount)) throw new Error("taskInfo(): amount is undefined in otherInfo")
+                return {
+                    taskType: taskType,
+                    piority: piority,
+                    handler: handler,
+                    target: otherInfo.target,
+                    resourceType: otherInfo.resourceType,
+                    amount: otherInfo.amount
+                }
+            }
 
+        }
+    }
+}
 module.exports = prototypeRoom
