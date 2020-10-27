@@ -7,4 +7,18 @@ function calcCreepCost(body) {
     }
     return cost
 }
-module.exports = { calcCreepCost }
+function getMinAndIndex(arr) {
+    var min = Number.POSITIVE_INFINITY
+    var index = -1
+    for (var i in arr) {
+        if (arr[i] < min) {
+            min = arr[i]
+            index = i
+        }
+    }
+    return { min: min, index: index }
+}
+module.exports = {
+    calcCreepCost,
+    getMinAndIndex
+}

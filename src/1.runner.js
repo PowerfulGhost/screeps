@@ -5,9 +5,12 @@ const roleBulider = require("./2.roleBuilder")
 const roleHarvester = require("./2.roleHarvester")
 const roleHauler = require("./2.roleHauler")
 const roleUpgrader = require("./2.roleUpgrader")
+const struContainer = require("./2.struContainer")
 const struSpawn = require("./2.struSpawn")
+const terrSource = require("./2.terrSource")
 
 var runner = {
+    //每tick对所有房间执行
     run: function () {
         for (var i in Game.rooms) {
             var room = Game.rooms[i]
@@ -30,19 +33,28 @@ var runner = {
                 var creep = Game.creeps[name]
                 if (creep.room.name != room.name) continue
                 switch (creep.memory.role) {
-                    case "harvester": roleHarvester.run(creep)
-                    case "hauler": roleHauler.run(creep)
-                    case "builder": roleBulider.run(creep)
-                    case "upgrader": roleUpgrader.run(creep)
+                    case "harvester": { roleHarvester.run(creep); break }
+                    case "hauler": { roleHauler.run(creep); break }
+                    case "builder": { roleBulider.run(creep); break }
+                    case "upgrader": { roleUpgrader.run(creep); break }
                 }
             }
+
             //建筑
             var structures = room.find(FIND_STRUCTURES)
             for (var i in structures) {
                 var structure = structures[i]
                 switch (structure.structureType) {
-                    case STRUCTURE_SPAWN: struSpawn.run(structure)
+                    case STRUCTURE_SPAWN: { struSpawn.run(structure); break }
+                    case STRUCTURE_CONTAINER: { struContainer.run(structure); break }
                 }
+            }
+
+            //source
+            var sources = room.find(FIND_SOURCES)
+            for (var i in sources) {
+                var source = sources[i]
+                terrSource.run(source)
             }
         }
     },

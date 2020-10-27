@@ -3,42 +3,49 @@ const { TASK_TYPE_HAUL, ERR_CREEP_NOT_REGISTED } = require("./const")
 var roleHauler = {
     /** @param {Creep} creep */
     run: function (creep) {
-        if (creep.memory.role != "hauler") return
+        if (creep.memory.role != "hauler") throw new Error(creep.name + " is not a hauler.")
 
-        if (creep.memory.taskInfo == null)  //无任务时持续等待任务
-            creep.memory.taskInfo = creep.room.getTask(TASK_TYPE_HAUL)
+        if (_.isUndefined(creep.memory.taskIndex)) creep.memory.taskIndex = null
+        if (creep.memory.taskIndex == null)  //无任务时持续等待任务
+            creep.memory.taskIndex = creep.room.getTaskIndex(TASK_TYPE_HAUL)
         else {  //有任务时
-            var taskInfo = creep.memory.taskInfo
+            var taskInfo = creep.room.getTaskInfo(creep.memory.taskIndex)
             var resourceType = taskInfo.resourceType
             var load = creep.store.getUsedCapacity(resourceType)
             var amount = taskInfo.amount
+            var capcaity = creep.store.getCapacity(resourceType)
             if (load < amount) {    //装载的资源小于要求数量时
                 if (!creep.memory.target)   //没有资源来源时，持续寻找来源
-                    creep.memory.target = creep.hauler_findResource(resourceType, amount - load)
-                else {  //有资源来源时，预定资源
+                    creep.memory.target = creep.hauler_findResource(resourceType, capcaity - load)
+                else {  //有资源来源时，预定能够填满store的量的资源
                     var target = Game.getObjectById(creep.memory.target)
-                    creep.hauler_claimResource(target, resourceType, amount - load)
+                    creep.hauler_claimResource(target, resourceType, capcaity - load)
                     if (!creep.pos.isNearTo(target)) {  //并且向资源移动并获取资源
                         creep.moveTo(target)
                     }
-                    creep.hauler_getResource(target, resourceType, amount - load)
+                    var result = creep.hauler_getResource(target, resourceType, capcaity - load)
+                    if (result == OK)    //成功获取资源后删除预定
+                        target.unregistClaimCreep(creep.id)
                 }
             }
             else {  //装载的资源量满足要求时
-                creep.memory.target = creep.memory.taskInfo.target
+                creep.memory.target = taskInfo.target
                 var target = Game.getObjectById(creep.memory.target)
+                if (!target) return
                 var result = null
                 if (!creep.pos.isNearTo(target)) {
                     creep.moveTo(target)
                 }
                 result = creep.transfer(target, resourceType, amount)
                 if (result == OK) {   //完成任务时
+                    creep.room.deleteTask(creep.memory.taskIndex)
                     creep.memory.target = null
-                    creep.memory.taskInfo = null
+                    creep.memory.taskIndex = null
                 }
             }
         }
     },
+    
     init: function () {
         //寻找最近的有指定数量资源的建筑
         Creep.prototype.hauler_findResource = function (resourceType, amount) {
@@ -64,7 +71,6 @@ var roleHauler = {
         }
         //从指定建筑中提取指定数量的资源，creep必须临近建筑
         Creep.prototype.hauler_getResource = function (target, resourceType, amount) {
-            console.log("getSource")
             if (_.isUndefined(target)) throw new Error("Creep.hauler_getResource(): target undefined.")
             if (!target instanceof Structure) throw new Error("Creep.hauler_getResource(): target is not a structure")
             if (_.isUndefined(target.store)) throw new Error("Creep.hauler_getResource(): target has no store.")

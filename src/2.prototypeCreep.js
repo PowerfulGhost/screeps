@@ -1,141 +1,14 @@
 // Creep原型扩展
 var prototypeCreep = {
     run: function () {
-        // 有限状态机，只返回下一状态，不改变creep的memory
-        Creep.prototype.FSM = function (fsmConfig) {
-            var state = this.memory.state
-            var resType = this.memory.resourceType
-            var otherStates = fsmConfig[state]   // state transition condition of current state
-            // 所有状态
-            for (var stateName in otherStates) {
-                var cond = otherStates[stateName]
-                var allCondValue = false   // this value decides if the state is going to be switched
-                // loop over all conditions 
-                for (var condName in cond) {
-                    var singleConds = cond[condName]
-                    var condValue = true
-                    // loop over all single conditions
-                    for (var singleCondName in singleConds) {
-                        var value = undefined
-                        switch (singleCondName) {
-                            case "full": { value = (this.store.getFreeCapacity(resType) == 0); break }
-                            case "empty": { value = (this.store.getUsedCapacity(resType) == 0); break }
-                            case "target": { value = (this.memory.target != null); break }
-                        }
-                        if (_.isUndefined(value)) throw new Error("Creep.FSM: unidentified condition: " + singleCondName)
-                        value = (value == singleConds[singleCondName])
-                        condValue &= value
-                    }
-                    allCondValue |= condValue
-                }
-                if (allCondValue == true) { this.memory.state = stateName; this.say(stateName); break }
-            }
+        //获得指定类型的身体部件的数量
+        Creep.prototype.getBodypartNum = function (bodypartType) {
+            count = 0
+            for (var i in this.body)
+                if (this.body[i].type == bodypartType) count += 1
+            return count
         }
-
-        // FOR ALL CREEPS
-        // find resource target cloest to the creep by a priority list, return the target's id
-        // if the creep already has a valid target, the priority won't work
-        Creep.prototype.findResourceTarget = function (resourceType = RESOURCE_ENERGY,
-            priority = [FIND_DROPPED_RESOURCES, STRUCTURE_STORAGE]) {
-            if (this.memory.role == "harvester") throw new Error("Creep.getResourceTarget: this method is not for harvesters. Use getSource() instead.")
-            var creepFreeCapacity = this.store.getFreeCapacity(resourceType)
-            if (this.memory.target) {
-                var target = Game.getObjectById(this.memory.target)
-                if (target instanceof Source)
-                    return this.memory.target
-                if (target && target.store)
-                    if (Game.getObjectById(this.memory.target).store.getUsedCapacity(resourceType) > creepFreeCapacity)
-                        return this.memory.target
-            }
-            for (var index in priority) {
-                var targetType = priority[index]
-                if (targetType == FIND_DROPPED_RESOURCES) {
-                    var target = this.pos.findClosestByRange(FIND_DROPPED_RESOURCES,
-                        {
-                            filter: function (resource) {
-                                return resource.resourceType == resourceType
-                            }
-                        })
-                    if (target) return target.id
-                }
-                else {
-                    var target = this.pos.findClosestByRange(FIND_STRUCTURES,
-                        {
-                            filter: function (stru) {
-                                return stru.structureType == targetType &&
-                                    stru.store.getUsedCapacity(resourceType) > creepFreeCapacity
-                            }
-                        })
-                    if (target) return target.id
-                }
-            }
-            return null
-        }
-
-        // pick up or withdraw resource from ground or a sturcture, if not in range, move to the target
-        Creep.prototype.getFromResourceTarget = function (target, resourceType = RESOURCE_ENERGY) {
-            if (_.isString(target)) { target = Game.getObjectById(target) }
-            if (target instanceof Resource) {
-                if (this.pickup(target) == ERR_NOT_IN_RANGE) this.moveTo(target)
-            }
-            if (target instanceof Structure) {
-                if (this.withdraw(target, resourceType) == ERR_NOT_IN_RANGE) this.moveTo(target)
-            }
-        }
-
-        // HARVESTERS
-        // find a source not occupied by a harvester and regist this creep to the source and return source's id
-        Creep.prototype.findSource = function (sourceType = FIND_SOURCES) {
-            if (this.memory.role != "harvester") throw new Error("Creep.findSource(): this method is only for harvesters.")
-            if (this.memory.source) throw new Error("Creep.findSource(): this creep already has a source to harvest.")
-            var sources = this.room.find(sourceType)
-            for (var index in sources) {
-                var source = sources[index]
-                if (!source.memory.harvester || source.memory.harvester == this.id) {
-                    source.memory.harvester = this.id
-                    return source.id
-                }
-            }
-            console.log("Creep.findSource(): all sources have been occupied.")
-            return null
-        }
-
-        // BUILDERS
-        // find the closest construction site or repairable structure with its hits < hitsLimit
-        // if the creep already has a target, the function checks if the target is valid, if valid, the function do nothing
-        Creep.prototype.findSite = function (hitsLimit = 100000) {
-            if (this.memory.role != "builder") throw new Error("Creep.findSite(): this method is only for builders")
-            if (this.memory.target) {
-                var target = Game.getObjectById(this.memory.target)
-                if (target instanceof ConstructionSite)
-                    return this.memory.target
-                if (target instanceof Structure)
-                    if (target.hits < target.hitsMax && target.hits < hitsLimit)
-                        return this.memory.target
-            }
-            var target = this.pos.findClosestByRange(FIND_CONSTRUCTION_SITES)
-            if (target) return target.id
-
-            target = this.pos.findClosestByRange(FIND_STRUCTURES,
-                {
-                    filter: function (stru) {
-                        return stru.hits < stru.hitsMax && stru.hits < hitsLimit
-                    }
-                })
-            if (target) return target.id
-
-            return null
-        }
-        // build or repair the target
-        Creep.prototype.buildOrRepairTarget = function (target) {
-            if (_.isString(target)) target = Game.getObjectById(target)
-            if (target instanceof ConstructionSite) {
-                if (this.build(target) == ERR_NOT_IN_RANGE) this.moveTo(target)
-            }
-            else {
-                if (this.repair(target) == ERR_NOT_IN_RANGE) this.moveTo(target)
-            }
-        }
+        
     }
 }
 

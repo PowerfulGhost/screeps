@@ -3,7 +3,7 @@ const { TASK_TYPE_HAUL } = require("./const")
 var roleUpgrader = {
     /** @param {Creep} creep */
     run: function (creep) {
-        if (creep.memory.role != "upgrader") return
+        if (creep.memory.role != "upgrader") throw new Error(creep.name + " is not a upgrader.")
 
         if (!creep.memory.target)
             creep.memory.target = creep.room.controller.id
@@ -19,6 +19,7 @@ var roleUpgrader = {
         }
 
     },
+    
     init: function () {
         //在能量不足时自动发布任务要求能量
         Creep.prototype.upgrader_setTask = function () {
@@ -31,13 +32,10 @@ var roleUpgrader = {
                     resourceType: RESOURCE_ENERGY,
                     amount: this.store.getCapacity(RESOURCE_ENERGY)
                 })
-                console.log("task set")
                 this.memory.taskAvaliable = false
             }
             if (this.store.getUsedCapacity(RESOURCE_ENERGY) > 0.5 * this.store.getCapacity(RESOURCE_ENERGY)){
                 this.memory.taskAvaliable = true
-                console.log("true")
-                console.log(_.isUndefined(this.memory.taskAvaliable))
             }
         }
     }
