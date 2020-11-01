@@ -1,7 +1,7 @@
 const manager = require("./1.manager")
 const prototypeCreep = require("./2.prototypeCreep")
-const prototypeRoom = require("./2.prototypeRoom")
 const prototypeStructure = require("./2.prototypeStructure")
+const { prototypeRoom } = require("./2.prototypeRoom")
 const prototypeTerrain = require("./2.prototypeTerrain")
 const roleBulider = require("./2.roleBuilder")
 const roleHarvester = require("./2.roleHarvester")

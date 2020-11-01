@@ -3,6 +3,7 @@ var roleHarvester = {
     /** @param {Creep} creep */
     run: function (creep) {
         if (creep.memory.role != "harvester") throw new Error(creep.name + " is not a harvester.")
+        if (_.isUndefined(creep.memory.target)) creep.memory.target = null
 
         //满配harvester
         //一个source只有一个harvester开采
@@ -25,7 +26,7 @@ var roleHarvester = {
         else {
             if (!creep.memory.target) {
                 //harvester无目标时，寻找最空闲的source
-                var target = harvester_findMinHarvesterTarget()
+                var target = creep.harvester_findMinHarvesterTarget()
                 if (target) creep.memory.target = target.id
             }
             if (creep.memory.target) {
@@ -78,7 +79,7 @@ var roleHarvester = {
                     }).length
                 )
             }
-            return sources[getMinAndIndex(harvesterCount)]
+            return sources[getMinAndIndex(harvesterCount)["index"]]
         }
         console.log("Harvester初始化完成")
     }

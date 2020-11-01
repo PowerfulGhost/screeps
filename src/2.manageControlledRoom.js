@@ -1,3 +1,4 @@
+const { protocolRoom } = require("./2.prototypeRoom")
 const { TASK_TYPE_HAUL, TASK_TYPE_SPAWN } = require("./const")
 
 var manageControlledRoom = {
@@ -26,28 +27,16 @@ var manageControlledRoom = {
     _creepNumManage: function (room) {
         var rcl = room.controller.level
         if (rcl <= 2) {
-            var creepNumTarget = {
-                harvester: 6,
-                builder: 1,
-                hauler: 6,
-                upgrader: 4
-            }
+            var creepNumTarget = { harvester: 1, builder: 0, hauler: 1, upgrader: 1 }
             setSpawnTask(room, creepNumTarget)
         }
         else {
-            var creepNumTarget = {
-                harvester: 2,
-                builder: 1,
-                hauler: 2,
-                upgrader: 2
-            }
+            var creepNumTarget = { harvester: 2, builder: 1, hauler: 2, upgrader: 2 }
             setSpawnTask(room, creepNumTarget)
         }
     },
 
-    _constructionManage: function(room){
-        
-    }
+    _constructionManage: function (room) { }
 }
 module.exports = manageControlledRoom
 
@@ -67,13 +56,10 @@ function setSpawnTask(room, target) {
         for (var i in allSpawnTaskIndices)
             if (room.memory.taskPool[allSpawnTaskIndices[i]].role == role) count += 1
         //队列中补足剩余的量
-        for (var i = 0; i < target[role] - count; i++)
-            room.setTask({
-                taskType: TASK_TYPE_SPAWN,
-                piroity: 1,
-                role: role,
-                body: calcBodypart(room, role)
-            })
+        for (var i = 0; i < target[role] - count; i++) {
+            console.log(role)
+            room.setTask(protocolRoom.generateTaskInfo(TASK_TYPE_SPAWN, 1, null, { role: role, body: calcBodypart(room, role) }))
+        }
     }
 }
 
@@ -111,7 +97,7 @@ function calcBodypart(room, role) {
         }
         case "builder": {
             var groupCost = BODYPART_COST[WORK] + BODYPART_COST[CARRY] + BODYPART_COST[MOVE]
-            var groupNum = Math.floor(groupCost)
+            var groupNum = Math.floor(energyCap / groupCost)
             return getBodypartArray({
                 WORK: groupNum,
                 CARRY: groupNum,

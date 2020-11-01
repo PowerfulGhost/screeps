@@ -1,0 +1,31 @@
+init
+mainLoop
+    static      //统计
+        ...
+        
+    runner      //自动部分
+        worldRunner         //多房间
+            worldManager    //多房间规划
+                expandManager
+                outerSourceManager
+                worldTaskManager
+                ...
+            worldRoles      //多房间角色
+                outerHarvester
+                outerHauler
+                ...
+            roomRunner      //房间内
+                roomManager //房间内规划
+                    consturctionManager
+                    taskManager
+                roomRoles   //房间内角色
+                    builder
+                    harvester
+                    hauler
+                    upgrader
+                    spawn
+                    tower
+                    ...
+
+    executer    //手动部分
+        ...
