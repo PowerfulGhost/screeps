@@ -1,8 +1,8 @@
 init
 mainLoop
-    static      //统计
+    statistic      //统计
         ...
-        
+
     runner      //自动部分
         worldRunner         //多房间
             worldManager    //多房间规划

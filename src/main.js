@@ -1,9 +1,7 @@
-const initialize = require("./1.initialize")
-const manager = require("./1.manager")
-const runner = require("./1.runner")
+const initialize = require("./0  initialize")
+const mainLoop = require("./1  mainLoop")
 
-initialize.run()
+initialize.init()
 module.exports.loop = function () {
-    manager.run()
-    runner.run()
+    mainLoop.run()
 }
