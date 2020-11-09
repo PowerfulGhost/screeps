@@ -15,10 +15,32 @@ var roomRoles = {
         upgrader.init()
         spawn.init()
         tower.init()
+        Room.prototype.roomRolesRun = function () {
+            var creeps = this.find(FIND_MY_CREEPS)
+            for (var name in creeps) {
+                var creep = creeps[name]
+                if (_.isUndefined(creep.memory.role) || !creep.memory.role) {
+                    logger.warn("Creep has no role: " + name + " @room " + this.name, "run")
+                    continue
+                }
+                switch (creep.memory.role) {
+                    case "builder": { creep.builderRun(); break }
+                    case "harvester": { creep.harvesterRun(); break }
+                    case "hauler": { creep.haulerRun(); break }
+                    case "upgrader": { creep.upgraderRun(); break }
+                }
+            }
+
+            var strus = this.find(FIND_MY_STRUCTURES)
+            for (var i in strus) {
+                var stru = strus[i]
+                switch (stru.structureType) {
+                    case STRUCTURE_SPAWN: { stru.spawnRun(); break }
+                    case STRUCTURE_TOWER: { stru.towerRun(); break }
+                }
+            }
+        }
     },
-    run: function () {
-        logger.trace("\t\t\t\troomRoles.run()")
-    }
 }
 
 module.exports = roomRoles

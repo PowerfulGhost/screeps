@@ -10,6 +10,13 @@ var roomRunner = {
     },
     run:function(){
         logger.trace("\t\t\troomRunner.run()")
+        for (var roomName in Game.rooms){
+            var room = Game.rooms[roomName]
+            if(room.controller.my){
+                room.roomManagerRun()
+                room.roomRolesRun()
+            }
+        }
     }
 }
 

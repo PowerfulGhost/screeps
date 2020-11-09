@@ -7,8 +7,11 @@ var roomManager = {
         logger.trace("\t\t\t\troomManager.init()")
         constructionManager.init()
         taskManager.init()
-        Room.prototype.roomManagerRun = function () { }
-    }
+        Room.prototype.roomManagerRun = function () {
+            this.constructionManagerRun()
+            this.taskManagerRun()
+        }
+    },
 }
 
 module.exports = roomManager
